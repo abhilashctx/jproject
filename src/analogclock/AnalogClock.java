@@ -41,22 +41,6 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 	
 	private Thread me ;
 	
-	/*private class Sock extends Thread{
-		public void run() {
-			try {
-				System.out.println("Waiting .... ");
-				ServerSocket ss = new ServerSocket(5050);
-				Socket s = ss.accept();
-				me = null;
-				s.close();
-				System.out.println("Stoping Clock ....");
-				System.exit(0);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	};*/
-	
 	public AnalogClock() {
 		
 		//super("Analog Clock v1.0 -");
@@ -76,13 +60,10 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 		});
 		
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		//System.out.println("w:"+d.width+",h:"+d.height);
-		//setBounds(400,400,200,200);
 		int width = 200;
 		int height = 200;
 		setLocation(d.width-width,0);
 		setSize(width,height);
-		//setUndecorated(true);
 		setAlwaysOnTop(true);
 		setVisible(true);
 		
@@ -90,23 +71,12 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 		me = new Thread(this);
 		me.start();
 		
-		//Sock sock = new Sock();
-		//sock.start();
 	}
 	
 	public int getHWND()
 	{
-		//int hwnd = 0;		
 		return 0;
 	}
-	
-	/*private int getRandom(int range)
-	{
-		if(random == null)
-			random = new Random(Calendar.getInstance().getTimeInMillis());
-		random.setSeed(Calendar.getInstance().getTimeInMillis());
-		return random.nextInt(range);
-	}*/
 	
 	private Point moveP;
 	public void mouseMoved(MouseEvent e) {
@@ -165,7 +135,8 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 			initial_setup();
 			captureDelay--;
 			if(captureDelay < 0) {captureScreen();captureDelay=300;}
-			repaint();
+			//repaint();
+			update(getGraphics());
 			try{Thread.sleep(30);}catch(Exception e){}
 		}
 	}
@@ -184,20 +155,15 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 		Graphics2D g2d = (Graphics2D)gr;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
-		//super.update(g);
 		int width  = getWidth();
 		int height = getHeight();
 		int cx = width/2;
 		int cy = height/2+10;
 		
-		//g2d.setColor(Color.WHITE);
-		//g2d.fillRect(0,0,width,height);
-		
 		//draw background image
 		if(bgImage != null)
 			g2d.drawImage(bgImage,0,0,getWidth(),getHeight(),
 	                  getX(),getY(),getX()+getWidth(),getY()+getHeight(),this);
-			//g2d.drawImage(bgImage,0,0,width,height,this);
 		
 		int cw = width*5/6;
 		int ch = height*5/6;
@@ -239,8 +205,6 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 		ccx= (int)(cx + 8*Math.cos(rad));
 		ccy= (int)(cy + 8*Math.sin(rad));
 		g2d.setColor(Color.RED);
-		//g2d.drawLine(ccx,ccy,sx,sy);
-		//g2d.drawString(""+ss,sx,sy);
 	
 		//draw seconds arcs
 		tdeg=(tdeg+5)%360;
@@ -250,12 +214,6 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 		g2d.fillArc(cx-ccw/2,cy-cch/2,ccw,cch,tdeg,120);
 		g2d.fillArc(cx-ccw/2,cy-cch/2,ccw,cch,tdeg+180,120);
 		
-//		ccw = (int)(width/2);
-//		cch = (int)(height/2);
-//		g2d.setColor(new Color(0,255,0,60));
-//		g2d.fillArc(cx-ccw/2,cy-cch/2,ccw,cch,-(rdeg+90),120);
-//		g2d.fillArc(cx-ccw/2,cy-cch/2,ccw,cch,-(rdeg+270),120);
-		
 		g2d.setColor(Color.BLACK);
 		String time = hh +":"+ mm +":"+ ss;
 		g2d.drawString(time,(int)(width/2.5),height-height/6);
@@ -264,6 +222,6 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 	}
 	int tdeg=0;
 	public static void main(String[] args) {
-		AnalogClock clock = new AnalogClock();
+		new AnalogClock();
 	}
 }

@@ -109,6 +109,6 @@ public class TimeWindow extends JWindow implements MouseMotionListener,Runnable,
 	}
 	
 	public static void main(String[] args) {
-		TimeWindow timeWindow = new TimeWindow();
+		new TimeWindow();
 	}
 }
