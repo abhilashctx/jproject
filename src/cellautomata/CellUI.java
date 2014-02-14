@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 
 public class CellUI extends Frame implements Runnable,MouseMotionListener,MouseListener{
 
-	
+	private static final long serialVersionUID = 1L;
 	public CellUI() {
 		
 		addWindowListener(new WindowAdapter(){

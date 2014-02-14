@@ -1,8 +1,5 @@
 package cellautomata;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Vector;
 
 
 public class CellHash {

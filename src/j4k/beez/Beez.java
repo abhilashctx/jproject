@@ -12,7 +12,8 @@ import java.util.Random;
 
 public class Beez extends Frame {
 
-	private byte hsp[];
+	private static final long serialVersionUID = 1L;
+	//private byte hsp[];
 	private float px1,py1,px2,py2,fx[],fy[],fbx[],fby[],aax[],aay[],adx[],ady[],aaa[];
 	float data[][];
 	//px[],py[],,vx[],vy[],ax[],ay[]
@@ -103,9 +104,9 @@ public class Beez extends Frame {
 		}
 	}
 	
-	private void init(){
+	/*private void init(){
 
-	}
+	}*/
 	
 	public void run()
 	{

@@ -1,21 +1,19 @@
 package cellautomata;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.VolatileImage;
 
 public class CellLife {
 
-	private boolean cell_lut[];
-	private int TL = 1;	//Top Left
-	private int T  = 2; //Top
-	private int TR = 4; //Top Right
-	private int L  = 8; //Left
-	private int C  = 16; //Center
-	private int R  = 32; //Right
-	private int DL = 64; //Down Left
-	private int D  = 128; //Down
-	private int DR = 256; //Down Right
+	//private boolean cell_lut[];
+	//private int TL = 1;	//Top Left
+	//private int T  = 2; //Top
+	//private int TR = 4; //Top Right
+	//private int L  = 8; //Left
+	//private int C  = 16; //Center
+	//private int R  = 32; //Right
+	//private int DL = 64; //Down Left
+	//private int D  = 128; //Down
+	//private int DR = 256; //Down Right
 	
 	private boolean pause = false; //this stops the next generation from calculation
 	
@@ -51,7 +49,7 @@ public class CellLife {
 		//new CellLifeThread(this).start();
 	}
 	
-	private void build_conwayRule()
+	/*private void build_conwayRule()
 	{
 		//creates the lut
 		int liveCount=0;
@@ -62,9 +60,9 @@ public class CellLife {
 			else if(isCenterAlive(i) && (liveCount != 2 && liveCount != 3)) cell_lut[i]=false;
 			System.out.println("cell_lut = "+cell_lut[i]);
 		}
-	}
+	}*/
 	
-	private boolean isCenterAlive(int c3)
+	/*private boolean isCenterAlive(int c3)
 	{
 		//In c3(cell 3x3) if center cell is alive then return true
 		if((c3 & C)>0) return true;
@@ -88,7 +86,7 @@ public class CellLife {
 		if((c3 & DR)>0) liveCount++;
 		
 		return liveCount;
-	}
+	}*/
 	
 	public void nextGeneration()
 	{
@@ -167,9 +165,9 @@ public class CellLife {
 		nxt_config = tmp;
 	}
 	
-	private void getCellStatus(Cell cell){
+	/*private void getCellStatus(Cell cell){
 		//Cell ctl = 
-	}
+	}*/
 	
 	public void drawCells(BufferedImage g,int width, int height)
 	{
@@ -221,7 +219,7 @@ public class CellLife {
 	public boolean getPause()
 	{return pause;}
 	
-	private class CellLifeThread extends Thread
+	/*private class CellLifeThread extends Thread
 	{
 		CellLife parent;
 		public CellLifeThread(CellLife cellLife)
@@ -237,7 +235,7 @@ public class CellLife {
 				try{Thread.sleep(1);}catch(Exception e){}
 			}
 		}
-	}
+	}*/
 	
 	public static void main(String[] args) {
 		

@@ -1,22 +1,31 @@
 package analogclock;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Calendar;
-import java.util.Random;
+//import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.swing.JWindow;
-
-import sun.util.calendar.JulianCalendar;
 
 
 public class AnalogClock extends JWindow implements Runnable,MouseMotionListener,FocusListener {
 
+	private static final long serialVersionUID = 1L;
 	private int hh;
 	private int mm;
 	private int ss;
@@ -24,7 +33,7 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 	private Image image;
 	private Graphics gr;
 	private Image bgImage;
-	private Random random;
+	//private Random random;
 	private Robot robot ;
 	private int captureDelay = 5;
 	
@@ -87,18 +96,17 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 	
 	public int getHWND()
 	{
-		int hwnd = 0;
-		
+		//int hwnd = 0;		
 		return 0;
 	}
 	
-	private int getRandom(int range)
+	/*private int getRandom(int range)
 	{
 		if(random == null)
 			random = new Random(Calendar.getInstance().getTimeInMillis());
 		random.setSeed(Calendar.getInstance().getTimeInMillis());
 		return random.nextInt(range);
-	}
+	}*/
 	
 	private Point moveP;
 	public void mouseMoved(MouseEvent e) {

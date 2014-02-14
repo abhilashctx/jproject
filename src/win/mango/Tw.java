@@ -6,6 +6,7 @@ import javax.swing.*;
  
 public class Tw extends JWindow implements MouseMotionListener,  FocusListener
 {
+	private static final long serialVersionUID = 1L;
 	Image     img,tim;
 	Graphics  tig; 
 	Point     mp;

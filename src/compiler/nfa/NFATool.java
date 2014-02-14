@@ -241,9 +241,9 @@ public class NFATool {
 	
 	private class NFASTATE{
 		public static final int EPSILON=-1;
-		public static final int NOLINK=-2;
+		//public static final int NOLINK=-2;
 		public int c1,c2;
 		public NFASTATE o1,o2;
-		public boolean isFinal;
+		//public boolean isFinal;
 	}
 }

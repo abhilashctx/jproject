@@ -32,7 +32,7 @@ public class FSD {
 	}
 	
 	private static final int BSIZE=256;
-	private static final int BOOTBLOCK=0;
+	//private static final int BOOTBLOCK=0;
 	private static final int FATBLOCK=1;
 	private static final int DIRSTART=2;
 	private static final int DATASTART=7;

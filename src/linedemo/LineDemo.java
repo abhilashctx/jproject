@@ -15,6 +15,7 @@ import java.util.Vector;
 
 public class LineDemo extends Frame implements MouseListener,MouseMotionListener{
 
+	private static final long serialVersionUID = 1L;
 	private boolean isrun=true;
 	private Vector<Line> lines;
 	

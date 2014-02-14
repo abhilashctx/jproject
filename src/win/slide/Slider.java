@@ -1,10 +1,7 @@
 package win.slide;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LayoutManager;
@@ -17,10 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
 import javax.swing.JWindow;
-import javax.swing.border.Border;
 
 public class Slider extends JWindow implements ActionListener,Runnable,MouseMotionListener,MouseListener{
 
@@ -28,7 +22,7 @@ public class Slider extends JWindow implements ActionListener,Runnable,MouseMoti
 	
 	private SliderThread sliderThread = null;
 	
-	private JTextArea jta;
+	//private JTextArea jta;
 	
 	private int WIDTH  = 200;
 	private int HEIGHT = 400;

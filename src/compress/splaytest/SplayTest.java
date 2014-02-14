@@ -1,5 +1,4 @@
 package compress.splaytest;
-import java.awt.EventQueue;
 import java.util.Random;
 
 public class SplayTest {

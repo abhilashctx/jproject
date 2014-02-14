@@ -1,6 +1,5 @@
 package rc;
 
-import java.util.Arrays;
 
 public class TAC2 {
 	

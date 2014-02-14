@@ -32,7 +32,7 @@ public class PointLine extends Frame {
 		x2=403;y2=321;
 		
 		float ax,ay,bx,by;
-		float tmp;
+		//float tmp;
 		
 		while(true){
 			

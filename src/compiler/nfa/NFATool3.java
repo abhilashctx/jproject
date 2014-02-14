@@ -247,7 +247,7 @@ public class NFATool3 {
 	private int closure(int _input,int _stk[],int _len)
 	{
 		int tmp[] = new int[10];
-		boolean changed=true;
+		//boolean changed=true;
 			for(int i=0;i<_len;i++){
 				int count = find_Transition(_input,_stk[i],tmp);
 				//System.out.println("count="+count);
