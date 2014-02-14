@@ -37,8 +37,9 @@ public class CellHash {
 		if(ct[keyX] == null) return null;
 		
 		for(Cell cell = ct[keyX]; cell != null; cell = cell.down){
-			if(cell != null && (cell.x == x) && (cell.y == y))
+			if(cell != null && (cell.x == x) && (cell.y == y)){
 				return cell;
+			}
 		}
 		return null;
 	}
@@ -47,7 +48,6 @@ public class CellHash {
 	{
 		Cell prev=null;
 		genKeys(x,y);
-		
 		for(Cell cell = ct[keyX]; cell != null; cell = cell.down){
 			
 			if((cell.x == x) && (cell.y == y)){
@@ -88,12 +88,13 @@ public class CellHash {
 		long st = System.currentTimeMillis();
 		Cell cell = new Cell(120,345);
 		cellHash.storeCell(cell);
-		for(int i=0;i<100000;i++){
+		cellHash.storeCell(new Cell(502,505));
+		for(int i=0;i<300000;i++){
 			cell = CellManager.createCell(i,i+1);//new Cell(i+2,i+5);
 			cellHash.storeCell(cell);
 		}
 		System.out.println("Insert time = "+(System.currentTimeMillis()-st));
-		for(int i=0;i<100000;i++){
+		for(int i=0;i<300000;i++){
 			//cell = new Cell(i+2,i+5);
 			cellHash.retrieveCell(i,i+1);
 		}
