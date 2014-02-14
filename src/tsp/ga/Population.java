@@ -1,0 +1,67 @@
+/*
+* Population.java
+* Manages a population of candidate tours
+*/
+
+package tsp.ga;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class Population {
+
+    // Holds population of tours
+    Tour[] tours;
+
+    // Construct a population
+    public Population(int populationSize, boolean initialise) {
+        tours = new Tour[populationSize];
+        // If we need to initialise a population of tours do so
+        if (initialise) {
+            // Loop and create individuals
+            for (int i = 0; i < populationSize(); i++) {
+                Tour newTour = new Tour();
+                newTour.generateIndividual();
+                saveTour(i, newTour);
+            }
+        }
+    }
+    
+    // Saves a tour
+    public void saveTour(int index, Tour tour) {
+        tours[index] = tour;
+    }
+    
+    // Gets a tour from population
+    public Tour getTour(int index) {
+        return tours[index];
+    }
+
+    // Gets the best tour in the population
+    public Tour getFittest() {
+        Tour fittest = tours[0];
+        // Loop through individuals to find fittest
+        for (int i = 1; i < populationSize(); i++) {
+            if (fittest.getFitness() < getTour(i).getFitness()) {
+                fittest = getTour(i);
+            }
+        }
+        return fittest;
+    }
+
+    // Gets population size
+    public int populationSize() {
+        return tours.length;
+    }
+    
+    public void sortByFitness(){
+    	Arrays.sort(tours, new TComp());
+    }
+    
+    class TComp implements Comparator<Tour>{
+    	public int compare(Tour o1, Tour o2) {
+    		return (o1.getDistance()-o2.getDistance());
+    	}
+    }
+}
