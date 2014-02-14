@@ -26,9 +26,9 @@ public class HttpDumpServ {
 				}
 				BufferedOutputStream bos = new BufferedOutputStream(s.getOutputStream());
 				// below string display 'hello world' in browser
-				//String str = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nhello world";
+				String str = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nhello world";
 				// below string sends a text file omg.txt with content 'hello world' to browser
-				String str = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\ncontent-disposition: attachment; filename=omg.txt\r\n\r\nhello world";
+				//String str = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\ncontent-disposition: attachment; filename=omg.txt\r\n\r\nhello world";
 				//application/octet-stream
 				bos.write(str.getBytes());
 				bos.flush();
@@ -40,5 +40,5 @@ public class HttpDumpServ {
 			e.printStackTrace();
 		}
 	}
-
+	//favicon.ico requests are made by browser to update a small image on the tab
 }
