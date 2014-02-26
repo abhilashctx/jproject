@@ -130,14 +130,21 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 	}
 	
 	public void run() {
+		long cts=System.currentTimeMillis();
+		long nts=cts+30;
 		while(me != null)
 		{
-			initial_setup();
-			captureDelay--;
-			if(captureDelay < 0) {captureScreen();captureDelay=300;}
-			//repaint();
-			update(getGraphics());
-			try{Thread.sleep(30);}catch(Exception e){}
+			if(cts>nts){
+				initial_setup();
+				captureDelay--;
+				if(captureDelay < 0) {captureScreen();captureDelay=300;}
+				//repaint();
+				update(getGraphics());
+				nts+=30;
+			}else{
+				try{Thread.sleep(nts-cts);}catch(Exception e){}
+			}
+			//try{Thread.sleep(30);}catch(Exception e){}
 		}
 	}
 	

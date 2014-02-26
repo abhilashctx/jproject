@@ -45,34 +45,43 @@ public class LineDemo extends Frame implements MouseListener,MouseMotionListener
 		BufferStrategy bs = getBufferStrategy();
 		long prevtimestamp = System.currentTimeMillis();
 		long currtimestamp = prevtimestamp;
+		long tmp_fs=0;
+		long nts = System.currentTimeMillis();
 		while(isrun){
 			
 			//time calculation
 			currtimestamp = System.currentTimeMillis();
-			long tmp_ts = (currtimestamp - prevtimestamp);
-			if(tmp_ts==0l){tmp_ts=1000;}
-			else{tmp_ts = 1000/tmp_ts;}
-			prevtimestamp = currtimestamp;
-			
-			Graphics2D g = (Graphics2D)bs.getDrawGraphics();
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-			
-			g.setColor(Color.BLACK);
-			g.fillRect(0,0,getWidth(),getHeight());
-			
-			for(int i=0;i<lines.size();i++){
-				Line line = lines.get(i);
-				intersection_detection(i,g);
-				g.setColor(Color.WHITE);
-				g.drawLine((int)line.x1,(int)line.y1,(int)line.x2,(int)line.y2);
-				g.drawOval((int)line.x1-2,(int)line.y1-2,4,4);
-				g.drawOval((int)line.x2-2,(int)line.y2-2,4,4);
+			if(currtimestamp>nts){
+				long tmp_ts = (currtimestamp - prevtimestamp);
+				if(tmp_ts==0l){tmp_ts=1000;}
+				else{tmp_ts = 1000/tmp_ts;}
+				prevtimestamp = currtimestamp;
+				tmp_fs = (long)(tmp_fs*0.8+tmp_ts*0.2);
+				
+				Graphics2D g = (Graphics2D)bs.getDrawGraphics();
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				
+				g.setColor(Color.BLACK);
+				g.fillRect(0,0,getWidth(),getHeight());
+				
+				for(int i=0;i<lines.size();i++){
+					Line line = lines.get(i);
+					intersection_detection(i,g);
+					g.setColor(Color.WHITE);
+					g.drawLine((int)line.x1,(int)line.y1,(int)line.x2,(int)line.y2);
+					g.drawOval((int)line.x1-2,(int)line.y1-2,4,4);
+					g.drawOval((int)line.x2-2,(int)line.y2-2,4,4);
+				}
+				
+				g.drawString("FPS:"+tmp_ts,200,50);
+				g.drawString("FPS:"+tmp_fs,200,65);
+				
+				bs.show();
+				nts+=20;
 			}
-			
-			g.drawString("FPS:"+tmp_ts,200,50);
-			
-			bs.show();
-			delay(10);
+			else{
+				delay(nts-currtimestamp);
+			}
 		}
 		isrun=true;
 	}
@@ -224,9 +233,9 @@ public class LineDemo extends Frame implements MouseListener,MouseMotionListener
 
 	public static void log(String msg)
 	{
-		System.out.println(msg);
+		//System.out.println(msg);
 	}
-	public static void delay(int v)
+	public static void delay(long v)
 	{
 		try{Thread.sleep(v);}catch(Exception e){}
 	}

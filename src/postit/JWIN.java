@@ -195,10 +195,15 @@ public class JWIN extends Window implements MouseMotionListener, ActionListener{
 		FontMetrics fm = g.getFontMetrics();
 		Stroke s1 = g.getStroke();
 		Stroke s7 = new BasicStroke(5);*/
+		long cts=System.currentTimeMillis();
+		long nts=cts+30;
 		while(true){
 			
 			//g.setColor(Color.green);
 			//g.fillRect(0, 0, 200, 200);
+			cts=System.currentTimeMillis();
+			if(cts>nts){
+			
 			g.drawImage(img, 0, 0, this);
 			g.setColor(Color.black);
 			if(note==null) note="- Empty -";
@@ -230,7 +235,10 @@ public class JWIN extends Window implements MouseMotionListener, ActionListener{
 				g.drawLine(187, 120, 164, 143);
 			}
 			getGraphics().drawImage(bi, 0, 0, this);
-			try{Thread.sleep(10);}catch(Exception e){}
+			nts+=30;
+			}else{
+			try{Thread.sleep(nts-cts);}catch(Exception e){}
+			}
 		}
 	}
 	
