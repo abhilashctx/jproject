@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -79,8 +80,6 @@ public class CView extends Window implements Runnable{
 		int cx=cwidth/2;
 		int cy=cheight/2;
 		
-		Hashtable<String, Object> root=new Hashtable<String, Object>();
-		root.put("name", "root");
 		ArrayList<Object> list = new ArrayList<Object>();
 		list.add("name");list.add("parent");
 		list.add("menu1");list.add("menu2");list.add("menu3");
@@ -98,30 +97,48 @@ public class CView extends Window implements Runnable{
 			rad+=drad;
 		}
 		
-		Graphics2D g = (Graphics2D)getGraphics();
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		createBufferStrategy(2);
+		BufferStrategy bs = getBufferStrategy();
 		
 		Color colorBlackT = new Color(0, 0, 0, 20);
 		
 		while(active){
-			g.drawImage(backImage,0,0,cwidth,cheight,backX,backY,backX+cwidth,backY+cheight, this);
+			Graphics2D g = (Graphics2D)bs.getDrawGraphics();
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 			
-			g.setColor(colorBlackT);
-			g.fillOval(cx-50, cy-50, 100, 100);
+			drawTransparentLayer(g);
+			drawMenuAreaLayer(g, colorBlackT, cx, cy);
+			drawMenuLayer(g, cx, cy, points,list);
 			
-			g.setColor(Color.GRAY);
-			g.fillOval(cx-10, cy-10, 20, 20);
-			
-			g.setColor(Color.RED);
-			for(int i=0;i<points.size();i++){
-				Point p = points.get(i);
-				g.fillOval(p.x-5, p.y-5, 10, 10);
-				g.setColor(Color.BLACK);
-			}
-			
+			g.dispose();
+			bs.show();
 			try{Thread.sleep(30);}catch(Exception e){}
 		}
 		USys.exit();
 	}
 	
+	private void drawTransparentLayer(Graphics2D g){
+		g.drawImage(backImage,0,0,cwidth,cheight,backX,backY,backX+cwidth,backY+cheight, this);
+	}
+	
+	private void drawMenuAreaLayer(Graphics2D g,Color colorBlackT,int cx,int cy){
+		g.setColor(colorBlackT);
+		g.fillOval(cx-50, cy-50, 100, 100);
+	}
+	
+	private void drawMenuLayer(Graphics2D g, int cx,int cy,ArrayList<Point> points,ArrayList<Object> list){
+		
+		g.setColor(Color.GRAY);
+		g.fillOval(cx-10, cy-10, 20, 20);
+		String root = (String)list.get(0);
+		g.setColor(Color.WHITE);
+		g.drawString(root, cx-10, cy-10);
+		
+		g.setColor(Color.RED);
+		for(int i=0;i<points.size();i++){
+			Point p = points.get(i);
+			g.fillOval(p.x-5, p.y-5, 10, 10);
+			g.setColor(Color.BLACK);
+		}
+	}
 }
