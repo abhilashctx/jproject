@@ -15,12 +15,15 @@ public class PointLine extends Frame {
 	float x,y;
 	float x1,y1,x2,y2;
 	
+	boolean isRun;
+	
 	public void init(){
 		width=height=500;
 		setSize(width,height);
 		setVisible(true);
 		
 		enableEvents(MouseEvent.MOUSE_PRESSED|MouseEvent.MOUSE_DRAGGED|WindowEvent.WINDOW_CLOSING);
+		isRun=true;
 	}
 	
 	public void run(){
@@ -34,7 +37,14 @@ public class PointLine extends Frame {
 		float ax,ay,bx,by;
 		//float tmp;
 		
-		while(true){
+		//start,end,avg times; frame count
+		long st=0,et=0,at=0,fc=0;
+		
+		int dpf = 1000/20 ; //delay per frame
+		
+		while(isRun){
+			
+			st=System.currentTimeMillis();
 			
 			g.setColor(Color.black);
 			g.fillRect(0,0,width,height);
@@ -74,19 +84,29 @@ public class PointLine extends Frame {
 			g.setColor(Color.red);
 			g.drawLine((int)x,(int)y,(int)cx,(int)cy);
 			
-			//rotate();
+			rotate();
 			
 			//done
 			getGraphics().drawImage(bi,0,0,this);
-			try{Thread.sleep(100);}catch(Exception e){}
+			
+			et=System.currentTimeMillis();
+			at += (et-st); fc++;
+			
+			long delay = dpf - (et-st);
+			if(delay>0){
+				try{Thread.sleep(delay);}catch(Exception e){}
+			}
 		}
+		
+		System.out.println("avg time per frame :"+(at/fc));
+		System.exit(0);
 	}
 	
 	protected void processEvent(AWTEvent e) {
 		MouseEvent m;
 		switch(e.getID()){
 		case WindowEvent.WINDOW_CLOSING:
-			System.exit(0);
+			isRun=false;
 			break;
 		case MouseEvent.MOUSE_DRAGGED:
 			m=(MouseEvent)e;
@@ -114,7 +134,7 @@ public class PointLine extends Frame {
 		float ty2=y2-my;
 		
 		//rotate
-		float rad=(float)Math.PI/180*180;
+		float rad=(float)(2*Math.PI/180);
 		float cos=(float)Math.cos(rad);
 		float sin=(float)Math.sin(rad);
 		

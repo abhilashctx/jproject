@@ -38,7 +38,7 @@ public class CellLife {
 		//build_conwayRule();
 		
 		//init with a line for start pattern
-		for(int i=0;i<100;i++)
+		for(int i=0;i<400;i++)
 			cur_config.createCell(200,100+i);
 //		
 //		cur_config.createCell(100,100);

@@ -43,9 +43,9 @@ public class CellUI extends Frame implements Runnable,MouseMotionListener,MouseL
 			bi = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(600,600);
 			//bi = new BufferedImage(600,600,BufferedImage.TYPE_INT_ARGB);
 		}
-		
+		long dpf = 1000/25;
 		while(true){
-			//long st = System.currentTimeMillis();
+			long st = System.currentTimeMillis();
 
 			//cellLife.nextGeneration();
 			
@@ -68,7 +68,10 @@ public class CellUI extends Frame implements Runnable,MouseMotionListener,MouseL
 			
 			//if(--gen_count < 0) return;
 			//System.out.println(" ,dt = "+(System.currentTimeMillis()-st));
-			//try{Thread.sleep(1);}catch(Exception e){}
+			long delay = dpf - (System.currentTimeMillis()-st);
+			if(delay>0){
+				try{Thread.sleep(1);}catch(Exception e){}
+			}
 		}
 	}
 	

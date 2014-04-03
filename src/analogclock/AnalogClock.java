@@ -36,6 +36,7 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 	//private Random random;
 	private Robot robot ;
 	private int captureDelay = 5;
+	private int tCaptureDelay = 5;
 	
 	private boolean mouseDown = false;
 	
@@ -129,22 +130,34 @@ public class AnalogClock extends JWindow implements Runnable,MouseMotionListener
 		}
 	}
 	
+	private void setCaptureDelay(int cdelay){
+		tCaptureDelay=cdelay;
+	}
+	private void resetCaptureDelay(){
+		captureDelay=tCaptureDelay;
+	}
+	private void triggerCapture(){
+		if(captureDelay<0){
+			captureScreen();
+			resetCaptureDelay();
+		}
+		captureDelay--;
+	}
+	
 	public void run() {
 		long cts=System.currentTimeMillis();
-		long nts=cts+30;
+		long dpf=1000/20;
+		setCaptureDelay(250);
 		while(me != null)
 		{
-			if(cts>nts){
-				initial_setup();
-				captureDelay--;
-				if(captureDelay < 0) {captureScreen();captureDelay=300;}
-				//repaint();
-				update(getGraphics());
-				nts+=30;
-			}else{
-				try{Thread.sleep(nts-cts);}catch(Exception e){}
+			cts=System.currentTimeMillis();
+			initial_setup();
+			triggerCapture();
+			update(getGraphics());
+			long delay = dpf - (System.currentTimeMillis()-cts);
+			if(delay>0){
+				try{Thread.sleep(delay);}catch(Exception e){}
 			}
-			//try{Thread.sleep(30);}catch(Exception e){}
 		}
 	}
 	

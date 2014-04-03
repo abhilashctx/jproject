@@ -46,12 +46,11 @@ public class LineDemo extends Frame implements MouseListener,MouseMotionListener
 		long prevtimestamp = System.currentTimeMillis();
 		long currtimestamp = prevtimestamp;
 		long tmp_fs=0;
-		long nts = System.currentTimeMillis();
+		long dpf = 1000/30;
 		while(isrun){
 			
 			//time calculation
 			currtimestamp = System.currentTimeMillis();
-			if(currtimestamp>nts){
 				long tmp_ts = (currtimestamp - prevtimestamp);
 				if(tmp_ts==0l){tmp_ts=1000;}
 				else{tmp_ts = 1000/tmp_ts;}
@@ -77,11 +76,8 @@ public class LineDemo extends Frame implements MouseListener,MouseMotionListener
 				g.drawString("FPS:"+tmp_fs,200,65);
 				
 				bs.show();
-				nts+=20;
-			}
-			else{
-				delay(nts-currtimestamp);
-			}
+
+			delay(dpf-(System.currentTimeMillis()-currtimestamp));
 		}
 		isrun=true;
 	}
@@ -237,11 +233,9 @@ public class LineDemo extends Frame implements MouseListener,MouseMotionListener
 	}
 	public static void delay(long v)
 	{
-		try{Thread.sleep(v);}catch(Exception e){}
-	}
-	public static int sqr(int v)
-	{
-		return v*v;
+		if(v>0){
+			try{Thread.sleep(v);}catch(Exception e){}
+		}
 	}
 
 class Line{

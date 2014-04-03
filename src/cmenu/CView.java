@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 public class CView extends Window implements Runnable{
 	private static final long serialVersionUID = 1L;
