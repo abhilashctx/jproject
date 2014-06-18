@@ -36,7 +36,7 @@ public class Decimal8 {
 		printdata(c);*/
 		
 		//System.out.println(strmul("23283064365386962890625","23283064365386962890625"));
-		System.out.println(strmul("256","256"));
+		System.out.println(strmul("65536","65536"));
 	}
 	
 	public static String strmul(String sa,String sb){

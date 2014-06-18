@@ -14,13 +14,13 @@ public class QuickSort implements Sort {
 		int i = x;
 		int j = y;
 		while (i<=j) {
-			while(a[i]<p) i++;
-			while(a[j]>p) j--;
+			while(i<y && a[i]<p) i++;
+			while(j>x && a[j]>p) j--;
 			if(i<=j){
 				swap(a,i,j); i++; j--;
 			}
 		}
-		//swap(a,p,j);
+		//System.out.println(i+","+j);
 		if(x<j) qsort(a,x,j);
 		if(i<y) qsort(a,i,y);
 	}

@@ -12,6 +12,8 @@ public class SortFactory {
 	
 	public static final int QUICK_INSERT_SORT = 5;
 	
+	public static final int SHELL_SORT = 6;
+	
 	public static Sort getSorter(int ID){
 		if(ID == INSERT_SORT){
 			return new InsertionSort();
@@ -23,6 +25,8 @@ public class SortFactory {
 			return new QuickSort();
 		}else if (ID == QUICK_INSERT_SORT){
 			return new QuickInsertSort();
+		}else if (ID == SHELL_SORT){
+			return new ShellSort();
 		}
 		return null;
 	}

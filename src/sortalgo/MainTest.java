@@ -7,14 +7,15 @@ public class MainTest {
 	public static void main(String[] args) {
 		int x=1000000;
 		//int x=65536;
-		//int x=30000;
+		//int x=20000;
 		int a[] = RandomArray.getArray(x, x);
 		
 		//ArrayDump.dump(a);
 		
+		test(SortFactory.SHELL_SORT,a);
 		test(SortFactory.QUICK_SORT,a);
-		test(SortFactory.HEAP_SORT,a);
 		test(SortFactory.QUICK_INSERT_SORT,a);
+		test(SortFactory.HEAP_SORT,a);
 		//test(SortFactory.INSERT_SORT,a);
 		//test(SortFactory.BUBBLE_SORT,a);
 		
@@ -22,10 +23,11 @@ public class MainTest {
 		
 		System.out.println("sorted");
 		a = RandomArray.getSortedArray(x);
+		test(SortFactory.SHELL_SORT,a);
 		test(SortFactory.QUICK_SORT,a);
-		test(SortFactory.HEAP_SORT,a);
 		test(SortFactory.INSERT_SORT,a);
 		test(SortFactory.QUICK_INSERT_SORT,a);
+		test(SortFactory.HEAP_SORT,a);
 	}
 	
 	public static void test(int ID, int a[]) {

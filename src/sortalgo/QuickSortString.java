@@ -122,7 +122,7 @@ public class QuickSortString {
 		// 17000 with cmp is ~1 sec , with cmp1 is ~750ms
 		//int x=17000;
 		//20000 with cmp1 ~950ms
-		int x=15000;
+		int x=20000;
 		byte a[][] = RandomArray.genStrings(x, x);
 		System.out.println("start");
 		QuickSortString q = new QuickSortString();

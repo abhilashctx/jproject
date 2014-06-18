@@ -3,8 +3,15 @@ package sortalgo;
 public class QuickInsertSortString {
 	
 	public void qsort(byte a[][],int x,int y){
-		if((y-x)<65){
-			insertsort(a, x, y);
+		if((y-x)<128){
+			for(int i=x+1;i<y;i++){
+				int j=i;
+				byte t[]=a[j];
+				while(j>0 && cmp1(a[j-1],t)>0){
+					a[j]=a[j-1]; j--;
+				}
+				a[j]=t;
+			}
 			return;
 		}
 		byte p[] = a[(x+y)/2];
@@ -19,21 +26,6 @@ public class QuickInsertSortString {
 		}
 		if(x<j) qsort(a, x, j);
 		if(i<y) qsort(a, i, y);
-	}
-	
-	public void insertsort(byte a[][],int x,int y){
-		for(int i=x+1;i<=y;i++){
-			int f=-1;
-			byte tmp[]=a[i];
-			for(int j=i-1;(j>=x) && (cmp1(tmp,a[j])<0);j--){
-				f=j;
-			}
-			if(f==-1) continue;
-			for(int j=i;j>f;j--){ swpCount++;
-				a[j]=a[j-1];
-			}
-			a[f]=tmp;
-		}
 	}
 	
 	public int cmp(byte a[],byte b[]){//1000
@@ -142,7 +134,7 @@ public class QuickInsertSortString {
 		//20000 with QS cmp1 ~950ms
 		//20000 with QIS cmp1 ~40ms
 		//int x=17000;
-		int x=15000;
+		int x=20000;
 		byte a[][] = RandomArray.genStrings(x, x);
 		System.out.println("start");
 		QuickInsertSortString q = new QuickInsertSortString();

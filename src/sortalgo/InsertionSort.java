@@ -5,12 +5,7 @@ public class InsertionSort implements Sort{
 	private int swpCount=0;
 	
 	public void sort(int a[]){
-		for(int i=1;i<a.length;i++){
-			/*for(int j=i;(j>0) && (a[j]<a[j-1]);j--){
-				int tmp = a[j];
-				a[j] = a[j-1];
-				a[j-1] = tmp;
-			}*/
+		/*for(int i=1;i<a.length;i++){
 			int f=-1;
 			int tmp=a[i];
 			for(int j=i-1;(j>=0) && (tmp<a[j]);j--){
@@ -21,6 +16,14 @@ public class InsertionSort implements Sort{
 				a[j]=a[j-1];
 			}
 			a[f]=tmp;
+		}*/
+		for(int i=1;i<a.length;i++){
+			int tmp=a[i];
+			int j=i;
+			while(j>0 && a[j-1]>tmp){
+				a[j]=a[j-1]; j-=1;
+			}
+			a[j]=tmp;
 		}
 	}
 	

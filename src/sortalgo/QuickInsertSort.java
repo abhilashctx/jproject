@@ -10,8 +10,15 @@ public class QuickInsertSort implements Sort {
 	
 	public void qsort(int[] a,int x,int y){
 		
-		if((y-x)<25){
-			insertsort(a, x, y);
+		if((y-x)<16){
+			//insertsort(a, x, y);
+			for(int i=x+1;i<y;i++){
+				int j=i;
+				int tmp=a[j];
+				while(j>0 && a[j-1]>tmp){
+					a[j]=a[j-1]; j--;
+				}a[j]=tmp;
+			}
 			return;
 		}
 		

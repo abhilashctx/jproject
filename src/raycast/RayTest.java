@@ -219,13 +219,18 @@ public class RayTest extends Frame{
 	public static void main(String[] args) {
 		RayTest rayTest = new RayTest();
 		rayTest.init();
+		long st=0,et=0;
+		long dpf = (1000/60);
 		while(rayTest.RUN){
-			rayTest.run();sleep(10);
+			st=System.currentTimeMillis();
+			rayTest.run();
+			et=System.currentTimeMillis();
+			sleep(dpf-(et-st));
 		}
 		rayTest.dispose();
 		System.exit(0);
 	}
-	public static void sleep(int t){
+	public static void sleep(long t){
 		try{Thread.sleep(t);}catch(Exception e){}
 	}
 	
