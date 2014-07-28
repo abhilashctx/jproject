@@ -17,6 +17,9 @@ public class PointLine extends Frame {
 	
 	boolean isRun;
 	
+	BufferedImage bi;
+	Graphics2D g;
+	
 	public void init(){
 		width=height=500;
 		setSize(width,height);
@@ -27,79 +30,102 @@ public class PointLine extends Frame {
 	}
 	
 	public void run(){
-		BufferedImage bi = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
-		Graphics2D g=(Graphics2D)bi.getGraphics();
+		bi = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+		g=bi.createGraphics();
 		setAntiAlias(g);
 		
 		x1=114;y1=193;
 		x2=403;y2=321;
 		
-		float ax,ay,bx,by;
-		//float tmp;
+		int frames=0;
+		int updates=0;
+		long frameUpdTime=System.currentTimeMillis();
+		long lastUpdTime=System.currentTimeMillis();
+		long lastRndTime=System.currentTimeMillis();
 		
-		//start,end,avg times; frame count
-		long st=0,et=0,at=0,fc=0;
-		
-		int dpf = 1000/20 ; //delay per frame
-		
+		int dpf = 1000/30 ; //delay per frame
+		int dpu = 1000/20 ; //delay per update
+		int skip=0;
 		while(isRun){
 			
-			st=System.currentTimeMillis();
-			
-			g.setColor(Color.black);
-			g.fillRect(0,0,width,height);
-			
-			//start rendering
-			g.setColor(Color.yellow);
-			g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
-			
-			g.setColor(Color.green);
-			g.drawOval((int)x-3,(int)y-3,6,6);
-			g.drawLine((int)x1,(int)y1,(int)x,(int)y);
-			
-			ax=x-x1;
-			ay=y-y1;
-			bx=x2-x1;
-			by=y2-y1;
-			float adotb=dot(ax,ay,bx,by);
-			g.setColor(Color.white);
-			g.drawString("a.b   = "+adotb,40,60);
-			
-			float axb=cross(ax,ay,bx,by);
-			g.drawString("axb   = "+axb,40,80);
-			//cross helps which side of line point is
-			
-			float bdotb=dot(bx,by,bx,by);
-			float proj=(float)(adotb/bdotb);
-			g.drawString("proj = "+proj,40,100);
-			
-			if(proj<0) proj=0;
-			else if(proj>1) proj=1;
-			
-			float cx=x1+proj*bx;
-			float cy=y1+proj*by;
-			g.drawString("cx = "+cx,40,120);
-			g.drawString("cy = "+cy,40,140);
-			
-			g.setColor(Color.red);
-			g.drawLine((int)x,(int)y,(int)cx,(int)cy);
-			
-			rotate();
-			
-			//done
-			getGraphics().drawImage(bi,0,0,this);
-			
-			et=System.currentTimeMillis();
-			at += (et-st); fc++;
-			
-			long delay = dpf - (et-st);
-			if(delay>0){
-				try{Thread.sleep(delay);}catch(Exception e){}
+			long now=System.currentTimeMillis();
+			skip=0;
+			while((now-lastUpdTime)>dpu && skip<5){
+				skip++;
+				lastUpdTime+=dpu;
+				update();
+				updates++;
 			}
+			if(lastUpdTime>now){
+				lastUpdTime=now;
+			}
+			if((now-lastRndTime)>dpf){
+				render();
+				lastRndTime=now;
+				frames++;
+			}
+
+			if((now-frameUpdTime)>1000){
+				frameUpdTime=now;
+				setTitle("fps:"+frames+" tps:"+updates );
+				frames=0;updates=0;
+			}
+			
+			//now=System.currentTimeMillis();
+			//long upddiff = now-lastUpdTime;
+			//long rnddiff = now-lastRndTime;
+			//long mindiff = Math.min(upddiff, rnddiff);
+			//System.out.println("mindiff:"+mindiff);
+			try{Thread.sleep(1);}catch(Exception e){}
 		}
-		
-		System.out.println("avg time per frame :"+(at/fc));
 		System.exit(0);
+	}
+	
+	private void update(){
+		float ax,ay,bx,by;
+		
+		g.setColor(Color.black);
+		g.fillRect(0,0,width,height);
+		
+		//start rendering
+		g.setColor(Color.yellow);
+		g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+		
+		g.setColor(Color.green);
+		g.drawOval((int)x-3,(int)y-3,6,6);
+		g.drawLine((int)x1,(int)y1,(int)x,(int)y);
+		
+		ax=x-x1;
+		ay=y-y1;
+		bx=x2-x1;
+		by=y2-y1;
+		float adotb=dot(ax,ay,bx,by);
+		g.setColor(Color.white);
+		g.drawString("a.b   = "+adotb,40,60);
+		
+		float axb=cross(ax,ay,bx,by);
+		g.drawString("axb   = "+axb,40,80);
+		//cross helps which side of line point is
+		
+		float bdotb=dot(bx,by,bx,by);
+		float proj=(float)(adotb/bdotb);
+		g.drawString("proj = "+proj,40,100);
+		
+		if(proj<0) proj=0;
+		else if(proj>1) proj=1;
+		
+		float cx=x1+proj*bx;
+		float cy=y1+proj*by;
+		g.drawString("cx = "+cx,40,120);
+		g.drawString("cy = "+cy,40,140);
+		
+		g.setColor(Color.red);
+		g.drawLine((int)x,(int)y,(int)cx,(int)cy);
+		
+		rotate();
+	}
+	private void render(){
+		getGraphics().drawImage(bi,0,0,this);
 	}
 	
 	protected void processEvent(AWTEvent e) {

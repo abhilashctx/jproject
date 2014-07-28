@@ -27,6 +27,13 @@ public class Slider extends JWindow implements ActionListener,Runnable,MouseMoti
 	private int WIDTH  = 200;
 	private int HEIGHT = 400;
 	
+	public static final String BCLOSE="x";
+	public static final String EActive="active";
+	public static final String EDActive="deactive";
+	
+	private SliderEvent closeHandler;
+	private SliderEvent activeHandler;
+	
 	public Slider()
 	{
 		
@@ -37,7 +44,7 @@ public class Slider extends JWindow implements ActionListener,Runnable,MouseMoti
 		
 		setWindowSizeAndShow(getScreenSize());
 		
-		addButton("x", getWidth()-55, 5, 45, 15);
+		addButton(BCLOSE, getWidth()-55, 5, 45, 15);
 		
 		Thread me = new Thread(this);
 		me.start();
@@ -70,7 +77,17 @@ public class Slider extends JWindow implements ActionListener,Runnable,MouseMoti
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		System.exit(0);
+		if(e.getActionCommand().equals(BCLOSE)){
+			if(closeHandler!=null) closeHandler.eventHandler(BCLOSE);
+			System.exit(0);
+		}
+	}
+	
+	public void setCloseHandler(SliderEvent event){
+		closeHandler = event;
+	}
+	public void setActiveHandler(SliderEvent event){
+		activeHandler = event;
 	}
 	
 	public void run() {
@@ -110,14 +127,17 @@ public class Slider extends JWindow implements ActionListener,Runnable,MouseMoti
 	public void mouseEntered(MouseEvent e) {
 		//System.out.println("Enter x,y    =   "+e.getX()+","+e.getY());
 		activate = true;
+		if(activeHandler!=null) activeHandler.eventHandler(EActive);
 	}
 	
 	public void mouseExited(MouseEvent e) {
 		//System.out.println("x,y    =   "+e.getX()+","+e.getY()+" --- "+getY());
 		//mouse co-ords are relative to window
 		//that is if mouse above window in x-axis then x is negative similar to y
-		if((e.getX() < 0) || (e.getX() > (getWidth())) || (e.getY() < 0) || (e.getY() > (getHeight())))
+		if((e.getX() < 0) || (e.getX() > (getWidth())) || (e.getY() < 0) || (e.getY() > (getHeight()))){
 			activate = false;
+			if(activeHandler!=null) activeHandler.eventHandler(EDActive);
+		}
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -134,16 +154,25 @@ public class Slider extends JWindow implements ActionListener,Runnable,MouseMoti
 		Slider slider = new Slider();
 	}
 	
+	public interface SliderEvent{
+		void eventHandler(String event);
+	}
+	
 	//Slider Thread
 	//this is what actually slides the window
-	private class SliderThread extends Thread{
+	private class SliderThread extends Thread implements SliderEvent{
 		
 		private Slider parent = null;
 		
 		private int slideAmount = 10;
 		
+		private boolean isActive;
+		
 		public SliderThread(Slider _parent) {
 			parent = _parent;
+			isActive=false;
+			parent.setCloseHandler(this);
+			parent.setActiveHandler(this);
 		}
 		
 		public void stopIt(){
@@ -153,29 +182,33 @@ public class Slider extends JWindow implements ActionListener,Runnable,MouseMoti
 		public void run() {
 			while(parent != null){
 				try{
-					//System.out.println("x="+parent.getX());
-					//System.out.println("y="+parent.getY());
-					
-					if(parent.isActivated()){
-						
+					//if(parent.isActivated()){
+					if(isActive){
 						if(Math.abs(parent.getX()-10) > slideAmount){
 							//System.out.println("Move x+1");
 							parent.setLocation(parent.getX()+slideAmount,parent.getY());
 						}
-						
 					}
 					else{
-						
 						if(Math.abs(parent.getX()-5) < parent.getWidth()-10){
 							//System.out.println("Move x+1");
 							parent.setLocation(parent.getX()-slideAmount,parent.getY());
 						}
-						
 					}
-					
 				}catch(Exception e){}
-				try{Thread.sleep(1);}catch(Exception e){}
+				try{Thread.sleep(10);}catch(Exception e){}
+			}
+		}
+		
+		public void eventHandler(String event) {
+			if(event.equals(Slider.BCLOSE)){
+				stopIt();
+			}else if(event.equals(Slider.EActive)){
+				isActive=true;
+			}else if(event.equals(Slider.EDActive)){
+				isActive=false;
 			}
 		}
 	}
+	
 }

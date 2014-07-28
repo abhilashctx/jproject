@@ -7,7 +7,7 @@ public class TestProcessBuilder {
 
         try {
             ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "dir");
-            pb.redirectError();
+            //pb.redirectError();
             Process p = pb.start();
             InputStreamConsumer isc = new InputStreamConsumer(p.getInputStream());
             isc.start();

@@ -73,10 +73,10 @@ public void paint(Graphics g)
 	tig.fillOval(40,02,11,21);
 	g.drawImage(tim,0,0,null);
 }
-public void cupdate(Graphics g)
+/*public void cupdate(Graphics g)
 {
 	this.paint(g);
-}
+}*/
 public static void main (String[] args)  
 {
 	new Tw();
