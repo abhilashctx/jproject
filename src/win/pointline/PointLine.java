@@ -13,7 +13,6 @@ public class PointLine extends Frame {
 	int width,height;
 	
 	float x,y;
-	float x1,y1,x2,y2;
 	
 	boolean isRun;
 	
@@ -39,11 +38,11 @@ public class PointLine extends Frame {
 		
 		int frames=0;
 		int updates=0;
-		long frameUpdTime=System.currentTimeMillis();
+		long titleUpdTime=System.currentTimeMillis();
 		long lastUpdTime=System.currentTimeMillis();
 		long lastRndTime=System.currentTimeMillis();
 		
-		int dpf = 1000/30 ; //delay per frame
+		int dpf = 1000/35 ; //delay per frame
 		int dpu = 1000/20 ; //delay per update
 		int skip=0;
 		while(isRun){
@@ -60,13 +59,14 @@ public class PointLine extends Frame {
 				lastUpdTime=now;
 			}
 			if((now-lastRndTime)>dpf){
-				render();
+				double ratio = (now-lastUpdTime-dpu)/dpu;
+				render(ratio);
 				lastRndTime=now;
 				frames++;
 			}
 
-			if((now-frameUpdTime)>1000){
-				frameUpdTime=now;
+			if((now-titleUpdTime)>1000){
+				titleUpdTime=now;
 				setTitle("fps:"+frames+" tps:"+updates );
 				frames=0;updates=0;
 			}
@@ -81,50 +81,66 @@ public class PointLine extends Frame {
 		System.exit(0);
 	}
 	
+	float adotb;
+	float axb;
+	float proj;
+	float x1,y1,x2,y2;
+	float cx,cy;
+	float px1,py1,px2,py2,pcx,pcy;
 	private void update(){
 		float ax,ay,bx,by;
+		
+		px1=x1;py1=y1;px2=x2;py2=y2;pcx=cx;pcy=cy;
+		
+		rotate();
+		
+		ax=x-x1;
+		ay=y-y1;
+		bx=x2-x1;
+		by=y2-y1;
+		adotb=dot(ax,ay,bx,by);
+		
+		axb=cross(ax,ay,bx,by);
+		
+		float bdotb=dot(bx,by,bx,by);
+		proj=(float)(adotb/bdotb);
+		
+		if(proj<0) proj=0;
+		else if(proj>1) proj=1;
+		
+		cx=x1+proj*bx;
+		cy=y1+proj*by;
+		
+	}
+	private void render(double r){
 		
 		g.setColor(Color.black);
 		g.fillRect(0,0,width,height);
 		
 		//start rendering
 		g.setColor(Color.yellow);
-		g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+		//g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+		g.drawLine((int)(px1+r*(x1-px1)),(int)(py1+r*(y1-py1)),(int)(px2+r*(x2-px2)),(int)(py2+r*(y2-py2)));
 		
 		g.setColor(Color.green);
 		g.drawOval((int)x-3,(int)y-3,6,6);
-		g.drawLine((int)x1,(int)y1,(int)x,(int)y);
+		//g.drawLine((int)x1,(int)y1,(int)x,(int)y);
+		g.drawLine((int)(px1+r*(x1-px1)),(int)(py1+r*(y1-py1)),(int)x,(int)y);
 		
-		ax=x-x1;
-		ay=y-y1;
-		bx=x2-x1;
-		by=y2-y1;
-		float adotb=dot(ax,ay,bx,by);
 		g.setColor(Color.white);
 		g.drawString("a.b   = "+adotb,40,60);
 		
-		float axb=cross(ax,ay,bx,by);
 		g.drawString("axb   = "+axb,40,80);
-		//cross helps which side of line point is
 		
-		float bdotb=dot(bx,by,bx,by);
-		float proj=(float)(adotb/bdotb);
 		g.drawString("proj = "+proj,40,100);
 		
-		if(proj<0) proj=0;
-		else if(proj>1) proj=1;
-		
-		float cx=x1+proj*bx;
-		float cy=y1+proj*by;
 		g.drawString("cx = "+cx,40,120);
 		g.drawString("cy = "+cy,40,140);
 		
 		g.setColor(Color.red);
-		g.drawLine((int)x,(int)y,(int)cx,(int)cy);
+		//g.drawLine((int)x,(int)y,(int)cx,(int)cy);
+		g.drawLine((int)x,(int)y,(int)(pcx+r*(cx-pcx)),(int)(pcy+r*(cy-pcy)));
 		
-		rotate();
-	}
-	private void render(){
 		getGraphics().drawImage(bi,0,0,this);
 	}
 	
