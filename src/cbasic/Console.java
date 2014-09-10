@@ -60,6 +60,7 @@ public class Console extends Frame implements Runnable{
 			for(int i=0;i<data.length;i++) for(int j=0;j<data[0].length;j++)
 					g.drawChars(data[i], j, 1, 10+j*8, 40+i*13);
 			cur=!cur;
+			if(cur)	g.drawString("_", 10+cc*8, 37+lc*13);
 			g.dispose();
 			bs.show();
 			try{Thread.sleep(100);}catch(Exception e){}
