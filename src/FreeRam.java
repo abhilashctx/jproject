@@ -6,38 +6,35 @@ import java.awt.event.KeyEvent;
 public class FreeRam {
 
 	public static void main(String[] args) throws Exception {
-		int a[] = new int[8];
-		int b[] = new int[16];
-		int c[] = new int[32];
 		
-		for(int k=0;k<10;k++)
-		for(int i=0;i<256;i++){
-			int ai = ((i>>5)&0x7);
-			int bi = ((i>>4)&0xF);
-			int ci = ((i>>3)&0x1F);
-			int r = (i*i);
-			a[ai] = (a[ai]+r)/2;
-			b[bi] = (b[bi]+r)/2;
-			c[ci] = (c[ci]+r)/2;
+		
+		//q();
+		//r(0,0);
+		
+		//for (int i=0; i<1024; ++i)
+		//      System.out.println(i+" > "+(16384/(i+i+3)));
+		int squash[] = new int[4096];
+		int stretch[]=new int[4096];
+		int sqi=0;
+		for(int i=0;i<4096;i++){
+			double x = ((i*17)/4096)-8;
+			double e = Math.exp(x);
+			int p = (int)(4096 * (e/(e+1)));
+			squash[i]=p;
+			stretch[i]=squash[i]-2048;
+			//System.out.println("p:"+p);
 		}
+		//squash[0]=1;squash[4095]=4094;
 		
-		int i = 15;
-		int aj = ((i>>5)&0x7);
-		int bj = ((i>>4)&0xF);
-		int cj = ((i>>3)&0x1F);
-		System.out.println("a :"+(a[aj]));
-		System.out.println("b :"+(b[bj]));
-		System.out.println("c :"+(c[cj]));
-		System.out.println(" :"+(5*c[cj]+2*b[bj]+a[aj])/8);
-		System.out.println(" :"+(c[cj]+c[cj+1])/2);
-		
-		System.out.println();
-		for(i=0;i<c.length;i++)
-			System.out.print(" "+c[i]);
-		System.out.println();
-		
-		q();
-		r(0,0);
+		/*int pi=0;
+		for(int x=-2047;x<=2047;x++){
+			int i=squash[x+2047];
+			for(int j=pi;j<=i;j++)
+				stretch[j]=x;
+			pi=i+1;
+		}
+		stretch[4095]=2047;*/
+		for(int i=0;i<4096;i++) System.out.println(i+"> P:"+stretch[i]+" = "+squash[i]);
 	}
 	
 	public static boolean xy[] = new boolean[64];
