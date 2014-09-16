@@ -5,7 +5,15 @@ public class QuickInsertSortText {
 	public void qsort(byte a[],int ai[],int x,int y){
 		
 		if((y-x)<65){
-			insertsort(a,ai, x, y);
+			//insertsort(a,ai, x, y);
+			for(int i=x+1;i<=y;i++){
+				int j=i;
+				int t=ai[i];
+				while(j>x && cmp(a,ai[j-1],t)>0){
+					ai[j]=ai[j-1]; j--;
+				}
+				ai[j]=t;
+			}
 			return;
 		}
 		
@@ -13,8 +21,8 @@ public class QuickInsertSortText {
 		int i=x;
 		int j=y;
 		while(i<=j){
-			while(cmp1(a,ai[i],ai[p])<0) i++;
-			while(cmp1(a,ai[j],ai[p])>0) j--;
+			while(cmp(a,ai[i],ai[p])<0) i++;
+			while(cmp(a,ai[j],ai[p])>0) j--;
 			if(i<=j){
 				swap(ai,i,j); i++;j--;
 			}
@@ -27,7 +35,7 @@ public class QuickInsertSortText {
 		for(int i=x+1;i<=y;i++){
 			int f=-1;
 			int tmp=ai[i];
-			for(int j=i-1;(j>=x) && (cmp1(a,tmp,ai[j])<0);j--){
+			for(int j=i-1;(j>=x) && (cmp(a,tmp,ai[j])<0);j--){
 				f=j;
 			}
 			if(f==-1) continue;
@@ -39,17 +47,23 @@ public class QuickInsertSortText {
 	}
 	
 	public int cmp(byte a[],int x,int y){//1000
+		if(x==y) return 0;
 		int diff=0;
-		int len = a.length ;//- ((x > y) ? x : y);
+		//int len = a.length ;//- ((x > y) ? x : y);
+		int len=Math.min(a.length-x, a.length-y);
+		boolean xbig = x<y;
+		int xi=x;
+		int yi=y;
 		for(int i=0;i<len;i++){
-			int xi = x+i;
-			int yi = y+i;
-			if(xi >= len) xi-=len;
-			if(yi >= len) yi-=len;
 			diff = a[xi]-a[yi];
 			if(diff!=0) return diff;
+			xi++;yi++;
+			//if(xi>=len) xi=0;
+			//if(yi>=len) yi=0;
 		}
-		return 0;
+		if(xbig) return 1;
+		else return -1;
+		//return 0;
 	}
 	
 	public int cmp1(byte a[],int x,int y){//1000
@@ -121,28 +135,19 @@ public class QuickInsertSortText {
 	}
 	
 	public static void qsorttest(){
-		// 17000 with cmp is ~1 sec , with cmp1 is ~750ms
-		//int x=17000;
-		//20000 with cmp1 ~950ms
 		byte a[] = RandomArray.genText();
 		int  ai[] = new int[a.length];
 		for(int i=0;i<ai.length;i++) ai[i]=i;
-		System.out.println("start");
+		System.out.println("start text length :"+a.length);
 		QuickInsertSortText q = new QuickInsertSortText();
 		long st = System.currentTimeMillis();
 		q.qsort(a,ai, 0, a.length-1);
 		long dt = System.currentTimeMillis() - st;
-		dump(a,ai);
+		//dump(a,ai);
 		System.out.println("time "+dt);
 	}
 	
 	public static void dump(byte a[],int ai[]){
-		/*for(int i=0;i<10;i++){
-			System.out.print(i+" -> ");
-			for(int j=0;j<10;j++){
-				System.out.print((char)a[ai[i]+j]);
-			}System.out.println("");
-		}*/
 		System.out.println("----");
 		for(int i=0;i<a.length;i++){
 			int idx = ai[i]+a.length-1;
