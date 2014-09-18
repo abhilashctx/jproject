@@ -1,6 +1,8 @@
 import java.awt.Frame;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 
 public class FreeRam {
@@ -11,30 +13,18 @@ public class FreeRam {
 		//q();
 		//r(0,0);
 		
-		//for (int i=0; i<1024; ++i)
-		//      System.out.println(i+" > "+(16384/(i+i+3)));
-		int squash[] = new int[4096];
-		int stretch[]=new int[4096];
-		int sqi=0;
-		for(int i=0;i<4096;i++){
-			double x = ((i*17)/4096)-8;
-			double e = Math.exp(x);
-			int p = (int)(4096 * (e/(e+1)));
-			squash[i]=p;
-			stretch[i]=squash[i]-2048;
-			//System.out.println("p:"+p);
-		}
-		//squash[0]=1;squash[4095]=4094;
-		
-		/*int pi=0;
-		for(int x=-2047;x<=2047;x++){
-			int i=squash[x+2047];
-			for(int j=pi;j<=i;j++)
-				stretch[j]=x;
-			pi=i+1;
-		}
-		stretch[4095]=2047;*/
-		for(int i=0;i<4096;i++) System.out.println(i+"> P:"+stretch[i]+" = "+squash[i]);
+		byte b[] = new byte[10000000];
+		try{
+			FileInputStream fis = new FileInputStream("E:/Abhilash/testarea/enwik8");
+			fis.read(b);
+			fis.close();
+			fis=null;
+			
+			FileOutputStream fos = new FileOutputStream("E:/Abhilash/testarea/enwik7");
+			fos.write(b);
+			fos.close();
+			fos=null;
+		}catch(Exception e){}
 	}
 	
 	public static boolean xy[] = new boolean[64];

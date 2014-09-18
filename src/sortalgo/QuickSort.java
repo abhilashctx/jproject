@@ -9,8 +9,11 @@ public class QuickSort implements Sort {
 	}
 	
 	public void qsort(int[] a,int x,int y){
+		
+		// commented bad implementation of qsort
+		
 		//int p = a[(x+y)/2];
-		int p = (a[x] + a[(x+y)/2] + a[y])/3;
+		/*int p = (a[x] + a[(x+y)/2] + a[y])/3;
 		int i = x;
 		int j = y;
 		while (i<=j) {
@@ -22,7 +25,19 @@ public class QuickSort implements Sort {
 		}
 		//System.out.println(i+","+j);
 		if(x<j) qsort(a,x,j);
-		if(i<y) qsort(a,i,y);
+		if(i<y) qsort(a,i,y);*/
+		
+		if(x>=y) return;
+		int p=(x+y)/2;
+		int i=x-1;
+		for(int j=i+1;j<=y;j++){
+			if(a[j]<=a[p]){
+				i++;swap(a, i, j);
+			}
+		}
+		swap(a, i, p);
+		qsort(a,x,i-1);
+		qsort(a,i+1,y);
 	}
 
 	public void swap(int[] a,int x,int y){

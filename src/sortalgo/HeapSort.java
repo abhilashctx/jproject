@@ -4,7 +4,22 @@ public class HeapSort implements Sort{
 
 	private int swpCount=0;
 	
-	public void sort(int[] a) {
+	public void sort(int a[]){
+		int end = a.length-1;
+		int start = ((end-1)>>1);
+		while(start>=0){
+			siftDw(a, start, end-1);
+			start-=1;
+		}
+		
+		while (end > 0){
+			{int t=a[end];a[end]=a[0];a[0]=t;}
+			end-=1;
+			siftDw(a, 0, end);
+		}
+	}
+	
+	/*public void sort(int[] a) {
 		heapify(a, a.length);
 		int end = a.length-1;
 		while (end > 0){
@@ -12,15 +27,15 @@ public class HeapSort implements Sort{
 			end-=1;
 			siftDw(a, 0, end);
 		}
-	}
+	}*/
 	
-	public void heapify(int a[], int count){
+	/*public void heapify(int a[], int count){
 		int start = ((count-1)>>1);//(count-1)/2;
 		while(start>=0){
 			siftDw(a, start, count-1);
 			start-=1;
 		}
-	}
+	}*/
 	
 	public void siftDw(int a[], int start, int end){
 		int root = start;

@@ -16,6 +16,7 @@ public class ITSort {
 		
 		//load data from file
 		byte a[] = RandomArray.genText();
+		a=rle(a);
 		if(debugLength)	System.out.println("data len :"+a.length);
 		
 		//create index array and initialize
@@ -66,21 +67,47 @@ public class ITSort {
 		for(int i=0;i<256;i++){
 			if(tb[i]>1){
 				int x=bb[i];
-				int y=tb[i]-1;
+				int y=x+tb[i]-1;
 				qsort(a, ai, x, y);
 			}
 		}
 		
 		//type-a sort
-		for(int i=0;i<a.length-1;i++){
-			
+		for(int i=0;i<a.length;i++){
+			int anow = ai[i];
+			if(anow>0){
+				if(a[anow-1]>a[anow]){
+					int aprev=a[anow-1]+128;
+					ai[ba[aprev]]=anow-1;
+					ba[aprev]++;
+				}
+			}
 		}
-		
-		System.out.println("DONE");
+		ai[ba[a[a.length-1]+128]]=a.length-1;
 		
 		if(debugTimer){
 			dt = System.currentTimeMillis()-dt;
 			System.out.println(dt+" ms");
+		}
+		
+		System.out.println("DONE");
+		
+		verifyResult(a, ai);
+		
+	}
+	
+	public static void verifyResult(byte a[],int ai[]){
+		for(int i=1;i<ai.length;i++){
+			if(a[ai[i-1]] > a[ai[i]]){
+				System.out.println("*Verify failed! ["+i+"] "+a[ai[i-1]]+" > "+a[ai[i]]);
+				//return;
+			}
+		}
+		System.out.println("verify complete");
+		int count[]=new int[ai.length];
+		for(int i=0;i<ai.length;i++) count[i]++;
+		for(int i=0;i<count.length;i++){
+			if(count[i]>1) System.out.println(i+"="+count[i]);
 		}
 	}
 	
@@ -91,10 +118,11 @@ public class ITSort {
 		System.out.println();
 	}
 	
-	public static void qsort(byte a[],int ai[],int x,int y){
+public static void qsort(byte a[],int ai[],int x,int y){
 		
-		if((y-x)<65){
-			//insertsort(a,ai, x, y);
+		if(x>=y) return;
+		
+		if((y-x)<17){
 			for(int i=x+1;i<=y;i++){
 				int j=i;
 				int t=ai[i];
@@ -106,29 +134,25 @@ public class ITSort {
 			return;
 		}
 		
-		int p = (x+y)/2;
-		int i=x;
-		int j=y;
-		while(i<=j){
-			while(cmp(a,ai[i],ai[p])<0) i++;
-			while(cmp(a,ai[j],ai[p])>0) j--;
-			if(i<=j){
-				swap(ai,i,j); i++;j--;
+		int p=x,i=x;
+		for(int j=i+1;j<=y;j++){
+			if(cmp(a,ai[j],ai[p])<=0){
+				i++; swap(ai, i, j);
 			}
 		}
-		if(x<j) qsort(a,ai, x, j);
-		if(i<y) qsort(a,ai, i, y);
+		swap(ai, p, i);
+		qsort(a,ai, x, i-1);
+		qsort(a,ai, i+1, y);
 	}
-	
+
 	public static int cmp(byte a[],int x,int y){
 		if(x==y) return 0;
-		int diff=0;
 		int len = Math.min(a.length-x, a.length-y);
 		boolean xbig=x<y;
 		int xi=x;
 		int yi=y;
 		for(int i=0;i<len;i++){
-			diff = a[xi]-a[yi];
+			int diff = a[xi]-a[yi];
 			if(diff!=0) return diff;
 			xi++;yi++;
 		}
@@ -139,6 +163,38 @@ public class ITSort {
 		int t = ai[i];
 		ai[i] = ai[j];
 		ai[j] = t;
+	}
+	
+	public static byte[] rle(byte a[]){
+		byte b[] = new byte[a.length];
+		int bi=0;
+		int count=1;
+		boolean dorle=true;
+		for(int i=1;i<a.length;i++){
+			if(count<250 && a[i]==a[i-1]){
+				count++;
+			}else{
+				if(count==1){
+					b[bi++]=a[i-1];
+				}
+				else{
+					b[bi++]=a[i-1]; b[bi++]=a[i-1];
+					b[bi++]= (byte)(count-2);
+					count=1;
+				}
+			}
+			if(bi+3 >= a.length && i+3 < a.length){
+				dorle=false; break;
+			}
+		}
+		byte c[];
+		if(dorle){
+			c=new byte[bi];
+			for(int i=0;i<bi;i++) c[i]=b[i];
+			b=null;
+		}else c=a;
+		System.out.println("rle:"+dorle);
+		return c;
 	}
 
 }
