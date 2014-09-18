@@ -1,8 +1,14 @@
 package sortalgo;
 
+import java.io.FileOutputStream;
+
 public class ITSort {
 
 	public static void main(String[] args) {
+		main_main(args);
+	}
+	
+	public static void main_main(String[] args) {
 		
 		//debug flag
 		final boolean debugLength=true;
@@ -21,21 +27,24 @@ public class ITSort {
 		
 		//create index array and initialize
 		int  ai[] = new int[a.length];
-		//for(int i=0;i<ai.length;i++) ai[i]=i;
+		for(int i=0;i<ai.length;i++) ai[i]=-1;
 		
 		//create type a,b
 		int ta[]=new int[256];
 		int tb[]=new int[256];
 		
 		//count suffixes
+		int tac=0,tbc=0;
 		for(int i=0;i<a.length-1;i++){
 			if((a[i]+128) > (a[i+1]+128)){
-				ta[a[i]+128]++;
+				ta[a[i]+128]++; tac++;
 			}else{
-				tb[a[i]+128]++;
+				tb[a[i]+128]++; tbc++;
 			}
 		}
-		ta[a[a.length-1]+128]++;
+		ta[a[a.length-1]+128]++; tac++;
+		
+		System.out.println("Type A : "+tac+" Type B : "+tbc);
 		
 		//create buckets
 		int ba[]=new int[256];
@@ -56,12 +65,15 @@ public class ITSort {
 		}
 		
 		//set type-b index on array
+		tbc=0;
 		for(int i=0;i<a.length-1;i++){
 			if((a[i]+128) <= (a[i+1]+128)){
 				bb[a[i]+128]--;
 				ai[bb[a[i]+128]]=i;
+				tbc++;
 			}
 		}
+		System.out.println("add TypeB "+tbc);
 		
 		//sort them
 		for(int i=0;i<256;i++){
@@ -73,17 +85,29 @@ public class ITSort {
 		}
 		
 		//type-a sort
-		for(int i=0;i<a.length;i++){
+		tac=0;
+		
+		//add first symbol which is before $(eof) charecter and update boundry
+		ai[ba[a[a.length-1]+128]]=a.length-1;ba[a[a.length-1]+128]++; tac++;
+		for(int i=0;i<ai.length;i++){
 			int anow = ai[i];
+			if(anow==0) continue;
 			if(anow>0){
-				if(a[anow-1]>a[anow]){
+				if(a[anow-1]+128>a[anow]+128){
 					int aprev=a[anow-1]+128;
 					ai[ba[aprev]]=anow-1;
 					ba[aprev]++;
+					tac++;
 				}
+			}else{
+				System.out.println(i+":-1");
+				/*ai[ba[a[a.length-1]+128]]=a.length-1;
+				ba[a[a.length-1]+128]++;
+				tac++;*/
 			}
 		}
-		ai[ba[a[a.length-1]+128]]=a.length-1;
+		//ai[ba[a[a.length-1]+128]]=a.length-1; tac++;
+		System.out.println("add TypeA "+tac);
 		
 		if(debugTimer){
 			dt = System.currentTimeMillis()-dt;
@@ -94,18 +118,46 @@ public class ITSort {
 		
 		verifyResult(a, ai);
 		
+		/*for(int i=0;i<a.length;i++)
+			System.out.print(ai[i]+":"+a[ai[i]]+" ");
+		System.out.println();*/
+		dump2File(getL(a, ai));
+	}
+	
+	public static byte[] getL(byte a[],int ai[]){
+		byte b[]=new byte[a.length];
+		for(int i=0;i<a.length;i++){
+			int idx = ai[i]-1;
+			if(idx==-1) idx=a.length-1;
+			b[i]=a[idx];
+		}
+		return b;
+	}
+	public static void dump2File(byte a[]){
+		try{
+			FileOutputStream fos = new FileOutputStream("E:/Abhilash/testarea/bwtout");
+			fos.write(a);
+			fos.close();
+			System.out.println("created bwtout");
+		}catch(Exception e){}
 	}
 	
 	public static void verifyResult(byte a[],int ai[]){
 		for(int i=1;i<ai.length;i++){
+			if(ai[i-1]<0){System.out.println("*-1 at "+(i-1));continue;}
+			if(ai[i]<0)  {System.out.println("*-1 at "+(i));continue;}
 			if(a[ai[i-1]] > a[ai[i]]){
-				System.out.println("*Verify failed! ["+i+"] "+a[ai[i-1]]+" > "+a[ai[i]]);
+				System.out.println("*Verify failed! ["+i+"] "+ai[i-1]+":"+a[ai[i-1]]+" > "+ai[i]+":"+a[ai[i]]);
 				//return;
 			}
 		}
 		System.out.println("verify complete");
+		//verifyICount(ai);
+	}
+	
+	public static void verifyICount(int ai[]){
 		int count[]=new int[ai.length];
-		for(int i=0;i<ai.length;i++) count[i]++;
+		for(int i=0;i<ai.length;i++) count[ai[i]]++;
 		for(int i=0;i<count.length;i++){
 			if(count[i]>1) System.out.println(i+"="+count[i]);
 		}
@@ -196,5 +248,5 @@ public static void qsort(byte a[],int ai[],int x,int y){
 		System.out.println("rle:"+dorle);
 		return c;
 	}
-
+	
 }
