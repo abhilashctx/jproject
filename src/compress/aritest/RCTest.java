@@ -16,18 +16,15 @@ public class RCTest {
 	}
 	
 	public int process(int b,int p,OutputStream os,InputStream is){
-		int nr = ((r*p)>>5)+1; //add 1 so it r is never 0, coz r=nr-1 below
+		int nr = ((r*p)>>5)+1; //add 1 so r is never 0, coz r=nr-1 below might be negative
 		if(d){b=((c-l)<nr)? 1:0;}
 		//if(d){System.out.println("c:"+c+" l:"+l+" (c-l):"+(c-l)+" nr:"+nr+" geq:"+((c-l)>=nr)+" b:"+b);}
-		if(b==1) r=nr-1; else {r-=nr;l+=nr;}
-		//while(r<0x100){ //will generate carry
-		while((l^(l+r))<0x100){
-		//	if((l&0xFF00)!=0xFF00){
-		//		int car=(l>>16);
-		//		buff += car; if(!d)  {try{os.write((byte)buff);while(buff_c>0){os.write((byte)(255+car));buff_c--;}}catch(Exception e){}}
-		//		buff = (l>>8)&0xFF;
-		//	}else buff_c++;
-			//if((l>>16)>0) System.out.println("carry");
+		if(b==1) r=nr; else {r-=nr;l+=nr;}
+		while( (l^(l+r))<0x100 || r<0x10){
+			if((l>>16)>0) System.out.println("carry "+(l>>16)); //check carry should never happen
+			if((l^(l+r))>=0x100 && r<0x10){
+				r=(-l)&0xF;
+			}
 			if(d)  {try{c=((c<<8)+is.read())&0xFFFF;}catch(Exception e){}}
 			else {try{os.write((byte)(l>>8));}catch(Exception e){}}
 			l=((l<<8)&0xFFFF); r=((r<<8)&0xFFFF)+0xFF;

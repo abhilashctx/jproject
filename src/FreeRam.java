@@ -13,7 +13,7 @@ public class FreeRam {
 		//q();
 		//r(0,0);
 		
-		byte b[] = new byte[10000000];
+		/*byte b[] = new byte[10000000];
 		try{
 			FileInputStream fis = new FileInputStream("E:/Abhilash/testarea/enwik8");
 			fis.read(b);
@@ -24,7 +24,35 @@ public class FreeRam {
 			fos.write(b);
 			fos.close();
 			fos=null;
-		}catch(Exception e){}
+		}catch(Exception e){}*/
+		System.out.println();
+		byte a[]={'a','a','b','b',(byte)150,(byte)150,(byte)150};
+		for(int i=0;i<a.length;i++) System.out.print(a[i]+" "); System.out.println();
+		a=dc(a);
+		for(int i=0;i<a.length;i++) System.out.print(a[i]+" "); System.out.println();
+		a=ddc(a);
+		for(int i=0;i<a.length;i++) System.out.print(a[i]+" "); System.out.println();
+		
+	}
+	
+	public static byte[] dc(byte a[]){
+		//delta ?
+		int pv=a[0];
+		for(int i=1;i<a.length;i++){
+			int v = pv - a[i];
+			pv = a[i];
+			a[i]=(byte)v;
+		}
+		return a;
+	}
+	
+	public static byte[] ddc(byte a[]){
+		//delta ?
+		for(int i=1;i<a.length;i++){
+			int v = a[i-1] - a[i];
+			a[i]=(byte)v;
+		}
+		return a;
 	}
 	
 	public static boolean xy[] = new boolean[64];

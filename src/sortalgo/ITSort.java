@@ -122,6 +122,7 @@ public class ITSort {
 			System.out.print(ai[i]+":"+a[ai[i]]+" ");
 		System.out.println();*/
 		dump2File(getL(a, ai));
+		//dump2File(dc(getL(a, ai)));
 	}
 	
 	public static byte[] getL(byte a[],int ai[]){
@@ -247,6 +248,17 @@ public static void qsort(byte a[],int ai[],int x,int y){
 		}else c=a;
 		System.out.println("rle:"+dorle);
 		return c;
+	}
+	
+	public static byte[] dc(byte a[]){
+		//delta ?
+		int pv=a[0];
+		for(int i=1;i<a.length;i++){
+			int v = pv - a[i];
+			pv = a[i];
+			a[i]=(byte)v;
+		}
+		return a;
 	}
 	
 }
