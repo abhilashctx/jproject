@@ -33,6 +33,42 @@ public class FreeRam {
 		a=ddc(a);
 		for(int i=0;i<a.length;i++) System.out.print(a[i]+" "); System.out.println();
 		
+		
+		int f[]= {10,4,1,1};
+		int fz[]={10,4,1,1};
+		int t[][]=new int[32][4];
+		int x=16;
+		//for(int i=16;i<t.length;i++){
+			while(x<32){
+				for(int fi=0;fi<f.length;fi++){
+					if(f[fi]>0){
+						t[fz[fi]][fi]=x;
+						fz[fi]++;
+						f[fi]--; x++;
+					}
+				}
+			}
+		//}
+		for(int i=0;i<t.length;i++){
+			System.out.print(i+" : ");
+			for(int fi=0;fi<f.length;fi++){
+				System.out.print(t[i][fi]+" ");
+			}
+			System.out.println();
+		}
+		
+		int d[]={0,0,1,2,0,0,1,0,0,0,1,0,0,1,1,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0};
+		int sx = 19;
+		int count=0;
+		for(int i=0;i<d.length;i++){
+			System.out.print("("+sx+")");
+			while(t[sx][d[i]]==0){
+				System.out.print(sx&1);
+				sx>>=1; count++;
+			}System.out.println();
+			sx=t[sx][d[i]];
+		}
+		System.out.println("("+sx+") count bits:"+(count+5) + " data:"+(d.length*2));
 	}
 	
 	public static byte[] dc(byte a[]){

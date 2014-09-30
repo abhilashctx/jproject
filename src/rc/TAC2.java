@@ -31,9 +31,11 @@ public class TAC2 {
 		
 		dump();
 		
-		dumpJava();
+		//dumpJava();
 		
 		System.out.println("stop");
+		
+		actest();
 	}
 	
 	public static int state(int l,int h){
@@ -97,6 +99,27 @@ public class TAC2 {
 			if(linebreak==0){linebreak=5;System.out.println();}
 		}
 		System.out.println("Total states : "+ti);
+		
 	}
+	
+	public static void actest(){
+		//test
+		int s=0,count=0;
+		for(int i=0;i<1048576;i++){
+			int b = ((i>>1)&1);
+			int p = (b>0) ? 7 : 1;
+			if(b>0){ count+=t[s+p].c1; s=t[s+p].n1;}
+			else { count+=t[s+p].c0; s=t[s+p].n0;}
+		}
+		System.out.println("bits output "+count);
+	}
+/*
+  if(b)
+  	output T[s+p].c1; s=T[(s<<3)+p].n1;
+  else
+  	output T[s+p].c0; s=T[(s<<3)+p].n0;
 
+  b=0; if(x<=T[s+p].m) b=1;
+  p=P[p].n[b];
+ */
 }

@@ -119,7 +119,7 @@ public class TestAC {
 			psi += 1;
 			ps[s].x = x;
 			ps[s].y = y;
-			int max = 32; // 100
+			int max = 27; // <64
 			ps[s].n1 = recprob((x < max ? x + 1 : x), (y+3)/4 );
 			ps[s].n0 = recprob( ((x+3)/4) , (y < max ? y + 1 : y));
 			ps[s].p = ((x * 4 + 1) << 3) / (x * 4 + y * 4 + 2); // <<8
@@ -152,7 +152,7 @@ public class TestAC {
 
 	public static void main(String[] args) {
 		TestAC testAC = new TestAC();
-		//testAC.run();
-		testAC.rprob();
+		testAC.run();
+		//testAC.rprob();
 	}
 }

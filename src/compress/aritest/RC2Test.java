@@ -17,7 +17,7 @@ public class RC2Test {
 	
 	public int process(int b,int p,OutputStream os,InputStream is){
 		int xy = x+(((y-x)*p)>>5);
-		//int xy = x+xyt[((y-x)>>12)][(p>>1)]; //table test
+		//int xy = x+xyt[((y-x)>>9)][p>>1]; //table test
 		if(d){b=(c<=xy)? 1:0;}
 		//if(d){System.out.println("x,y:"+x+","+y+" c:"+c+" xy:"+xy+" b:"+b);}
 		if(b==1) y=xy; else x=xy+1;
@@ -27,6 +27,7 @@ public class RC2Test {
 			else {try{os.write((byte)(x>>8));}catch(Exception e){}}
 			x=((x<<8)&0xFFFF); y=((y<<8)&0xFFFF)+0xFF;
 		}
+		//p+=(((b<<5)-p)>>3); //possible way 
 		return b;
 	}
 	
@@ -94,9 +95,9 @@ public class RC2Test {
 	
 	private int xyt[][];
 	public void xyTableGen(){
-		xyt = new int[16][16];
+		xyt = new int[128][16];
 		for(int i=0;i<xyt.length;i++) for(int j=0;j<xyt[0].length;j++){
-			xyt[i][j]= ((i*j)<<8);
+			xyt[i][j]= ((i*j)<<5);
 		}
 	}
 }

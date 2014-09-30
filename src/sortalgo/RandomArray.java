@@ -35,7 +35,7 @@ public class RandomArray {
 	}
 	
 	public static byte[] genText(){
-		String fname = "E:\\Abhilash\\testarea\\enwik7";
+		String fname = "E:\\Abhilash\\testarea\\calgary";
 		//String fname = "E:\\Abhilash\\testarea\\world95.txt";
 		try{
 			FileInputStream fis = new FileInputStream(fname);
