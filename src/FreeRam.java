@@ -69,6 +69,9 @@ public class FreeRam {
 			sx=t[sx][d[i]];
 		}
 		System.out.println("("+sx+") count bits:"+(count+5) + " data:"+(d.length*2));
+		
+		writebits(0x1F, 5);writebits(0xA, 4);
+		
 	}
 	
 	public static byte[] dc(byte a[]){
@@ -106,5 +109,16 @@ public class FreeRam {
 		System.out.println("px,py:"+px+","+py);
 		r(x+1,(y+3)/4);
 		r((x+3)/4,y+1);
+	}
+	
+	public static int wbData=0;
+	public static int wbLen=0;
+	public static void writebits(int data,int len){
+		wbData=(wbData<<len)+data;
+		wbLen+=len;
+		while(wbLen >= 8){
+			System.out.println("data : "+((wbData>>(wbLen-8))&0xFF));
+			wbLen-=8;
+		}
 	}
 }
