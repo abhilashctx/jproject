@@ -39,7 +39,7 @@ public class QuickSortTest {
 	
 	public static void main(String[] args) {
 		int a[] = {6,10,11,5,12,15,3,1,8,2,14,4};
-		qs1(a,0,a.length-1);
+		qs(a,0,a.length-1);
 		d(a);
 	}
 	

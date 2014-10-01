@@ -44,6 +44,12 @@ public class SqrRoot {
 		//System.out.println("loops:"+loops);
 		return low;
 	}
+	public static double mk=0,mv=0;
+	public static double MemMathCbrt(double v){
+		if(mk==v) return mv;
+		mk=v; mv=Math.cbrt(v);
+		return mv;
+	}
 	public static void main(String[] args) {
 		System.out.println(NRsqrt(105124009));
 		System.out.println(BSsqrt(105124009));
@@ -62,6 +68,8 @@ public class SqrRoot {
 		for(int i=0;i<1000000;i++){
 			//BSsqrt(105124009);
 			BScbrt(105124009);
+			//Math.cbrt(105124009);
+			//MemMathCbrt(105124009);
 		}
 		dt=System.currentTimeMillis()-st;
 		System.out.println(dt+" ms");

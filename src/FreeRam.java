@@ -72,6 +72,32 @@ public class FreeRam {
 		
 		writebits(0x1F, 5);writebits(0xA, 4);
 		
+		int z=1048576,ctrl=1;
+		long dtt[]=new long[2];
+		while(ctrl>=0){
+			long dt = System.currentTimeMillis();
+			if(ctrl==1){
+				z=1048576;
+				for(int i=0;i<100000000;i++){
+					z+=((i<<3));
+				}
+			}else{
+				z=1048576;
+				for(int i=0;i<100000000;i++){
+					z+=(i/15791);
+				}
+			}
+			dtt[ctrl]=System.currentTimeMillis()-dt;
+			ctrl--;
+		}
+		System.out.println("div "+dtt[0]);
+		System.out.println("sh "+dtt[1]);
+		System.out.println("div is "+((double)dtt[0]/dtt[1])+" times slower than sh,mul ignore->"+z);
+		
+		System.out.println((1048576/3)+" "+((1048576)-(1048576>>2)));
+		int q = (1048576>>2)+(1048576>>4);
+		q+=(q>>4);q+=(q>>8);q+=(q>>16);
+		q=(11*(1048576-q*3)>>5); System.out.println(q);
 	}
 	
 	public static byte[] dc(byte a[]){
