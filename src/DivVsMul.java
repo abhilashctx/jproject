@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 
-public class FreeRam {
+public class DivVsMul {
 
 	public static void main(String[] args) throws Exception {
 		

@@ -29,7 +29,8 @@ public class QuickSort implements Sort {
 		
 		if(x>=y) return;
 		int p=(x+y)/2;
-		int i=x-1;
+		int ts=a[p]; a[p]=a[x]; a[x]=ts;
+		int i=x; p=x;
 		for(int j=i+1;j<=y;j++){
 			if(a[j]<=a[p]){
 				i++;swap(a, i, j);

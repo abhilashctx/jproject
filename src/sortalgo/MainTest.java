@@ -5,9 +5,10 @@ import java.util.Arrays;
 public class MainTest {
 	
 	public static void main(String[] args) {
-		int x=2000000;
+		int x=(1<<21);
+		//int x=2000000;
+		//int x=(1<<17);
 		//int x=65536;
-		//int x=20000;
 		int a[] = RandomArray.getArray(x, x);
 		
 		//ArrayDump.dump(a);

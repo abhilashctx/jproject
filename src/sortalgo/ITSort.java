@@ -175,7 +175,7 @@ public static void qsort(byte a[],int ai[],int x,int y){
 		
 		if(x>=y) return;
 		
-		if((y-x)<17){
+		/*if((y-x)<10){
 			for(int i=x+1;i<=y;i++){
 				int j=i;
 				int t=ai[i];
@@ -185,7 +185,7 @@ public static void qsort(byte a[],int ai[],int x,int y){
 				ai[j]=t;
 			}
 			return;
-		}
+		}*/
 		
 		int p=x,i=x;
 		for(int j=i+1;j<=y;j++){

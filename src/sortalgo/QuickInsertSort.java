@@ -12,11 +12,11 @@ public class QuickInsertSort implements Sort {
 		
 		if((y-x)<16){
 			//insertsort(a, x, y);
-			for(int i=x+1;i<y;i++){
+			for(int i=x+1;i<=y;i++){
 				int j=i;
 				int tmp=a[j];
 				while(j>0 && a[j-1]>tmp){
-					a[j]=a[j-1]; j--;
+					a[j]=a[j-1]; j--; swpCount++;
 				}a[j]=tmp;
 			}
 			return;
@@ -24,7 +24,8 @@ public class QuickInsertSort implements Sort {
 		
 		if(x>=y) return;
 		int p=(x+y)/2;
-		int i=x-1;
+		int ts=a[p]; a[p]=a[x]; a[x]=ts;
+		int i=x; p=x;
 		for(int j=i+1;j<=y;j++){
 			if(a[j]<=a[p]){
 				i++;swap(a, i, j);

@@ -8,7 +8,7 @@ public class QuickInsertSortText {
 		
 		if(x>=y) return;
 		
-		if((y-x)<17){
+		if((y-x)<10){
 			for(int i=x+1;i<=y;i++){
 				int j=i,t=ai[i];
 				while(j>x && cmp(a,ai[j-1],t)>0){

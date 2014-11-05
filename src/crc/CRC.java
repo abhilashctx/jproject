@@ -1,5 +1,7 @@
 package crc;
 
+import java.util.Random;
+
 public class CRC {
 
 	public static void main(String[] args) {
@@ -18,7 +20,7 @@ public class CRC {
 			int b=8;
 			do
 			{
-				if( (r & 0x100000) > 0)
+				if( (r & 0x800000) > 0)
 				{
 					r = ((r<<1) ^ poly) & 0xffffff;
 				}
@@ -33,7 +35,7 @@ public class CRC {
 		
 //		now compute crc for a giving msg
 		
-		int msg[] = {'j','e','l','l','o',' ','w','o','r','l','d'};
+		int msg[] = {'h','e','l','l','o',' ','w','o','r','l','d'};
 		
 		r = 0;
 		
@@ -45,6 +47,8 @@ public class CRC {
 		
 		System.out.println("crc = "+Integer.toHexString(r));
 		
+		tablehash();
+		tablehashSimpler();
 		/*int p1 = 100;
 		int p2 = 150;
 		int p3 = 1;
@@ -57,5 +61,39 @@ public class CRC {
 		p = (p1+p2*4+p3*9+p4*16)/(1+4+9+16);
 		p+=2048;
 		System.out.println("p="+p);*/
+	}
+	
+	/*
+	 data enters from left 
+	 */
+	public static void tablehash(){
+		int htab[] = new int[256];
+		Random rand = new Random(0x876543);
+		for(int i=0;i<htab.length;i++){
+			htab[i] = rand.nextInt((1<<16)-1)+1;
+		}
+		int msg[] = {'h','e','l','l','o',' ','w','o','r','l','d'};
+		int r = 0;
+		for(int b=0;b<msg.length;b++){
+			r = (htab[(r>>8) ^ msg[b]] ^ (r<<8))&0xFFFF;
+		}
+		System.out.println("table# "+Integer.toHexString(r));
+	}
+	
+	/*
+	 * bitwise, data right to left
+	 */
+	public static void tablehashSimpler(){
+		int poly = 0x8408;
+		int r = 0xFFFF;
+		int msg[] = {'h','e','l','l','o',' ','w','o','r','l','d'};
+		for(int b=0;b<msg.length;b++){
+			r^=msg[b];
+			for(int i=0;i<8;i++){
+				if((r & 1)>0) r = ((r>>1) ^ poly);
+				else r=(r>>1);
+			}
+		}
+		System.out.println("tablesimple# "+Integer.toHexString(r));
 	}
 }
