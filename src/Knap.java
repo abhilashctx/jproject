@@ -4,7 +4,7 @@ public class Knap {
 	//public static int v[] = {0,10,10,9,5,7,3,8,12,13,14,11};
 	//public static int w[] = {0,1,  5,3,4,2,2,4, 5, 7, 5, 9};
 	
-	public static int v[] = {0,30,60,40,20,90,110,100,120,70,10,80,50,5};
+	public static int v[] = {0,30,60,40,20,90,130,100,120,70,10,80,50,5};
 	public static int w[] = {0,20,50,18,15,200,100,200,150,35,25,60,20,7};
 	public static String n[] = {"dummy","bread","icream","mirchi","samosa","pizza","home","kfc","fruits","juices","milk","milkshake","tiffins","choc"};
 

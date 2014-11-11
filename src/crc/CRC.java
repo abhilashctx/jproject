@@ -67,15 +67,16 @@ public class CRC {
 	 data enters from left 
 	 */
 	public static void tablehash(){
-		int htab[] = new int[256];
-		Random rand = new Random(0x876543);
-		for(int i=0;i<htab.length;i++){
-			htab[i] = rand.nextInt((1<<16)-1)+1;
-		}
+		int poly=0x1021;
 		int msg[] = {'h','e','l','l','o',' ','w','o','r','l','d'};
-		int r = 0;
+		int r = 0xFFFF;
 		for(int b=0;b<msg.length;b++){
-			r = (htab[(r>>8) ^ msg[b]] ^ (r<<8))&0xFFFF;
+			r^=(msg[b]<<8);
+			for(int i=0;i<8;i++){
+				//if((r&0x8000)>0) r = ((r<<1)^poly)&0xFFFF;
+				//else r = ((r<<1)&0xFFFF);
+				r = ((r<<1)^(poly*(r>>15)))&0xFFFF;
+			}
 		}
 		System.out.println("table# "+Integer.toHexString(r));
 	}
@@ -90,8 +91,9 @@ public class CRC {
 		for(int b=0;b<msg.length;b++){
 			r^=msg[b];
 			for(int i=0;i<8;i++){
-				if((r & 1)>0) r = ((r>>1) ^ poly);
-				else r=(r>>1);
+				//if((r & 1)>0) r = ((r>>1) ^ poly);
+				//else r=(r>>1);
+				r = ( (r>>1) ^ (poly*(r&1)) );
 			}
 		}
 		System.out.println("tablesimple# "+Integer.toHexString(r));
