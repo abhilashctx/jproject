@@ -64,8 +64,10 @@ public class TGen extends Frame implements Runnable{
 	}
 	public void crazyShader(int i,int j,Graphics g){
 		if(data[i][j]<40) g.setColor(Color.BLUE);
-		else if(data[i][j]<55) g.setColor(Color.YELLOW);
-		else g.setColor(Color.GREEN);
+		else if(data[i][j]<50) g.setColor(Color.YELLOW);
+		else if(data[i][j]<70) g.setColor(Color.GREEN);
+		else if(data[i][j]<80) g.setColor(Color.LIGHT_GRAY);
+		else g.setColor(Color.WHITE);
 	}
 	
 	// random terrain generation
